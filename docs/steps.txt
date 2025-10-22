@@ -1,0 +1,174 @@
+Perfecto, ahora que tienes todo el contexto y las fuentes claras (tu PDF y el tutorial de DigitalOcean), podemos desarrollar un **plan por fases** bien explicado para que estructures tu práctica, documentes correctamente con capturas, y prepares un buen README para GitHub.
+
+***
+
+## 🧩 Plan de trabajo por fases — Proyecto: Servidores Virtuales Apache + Docker
+
+***
+
+### **Fase 1. Preparación del entorno de trabajo**
+
+**Objetivo:** Asegurar que tu sistema tiene todas las herramientas necesarias y la estructura de carpetas base.
+
+**Acciones a realizar:**
+- Instalar **Docker** y **Docker Compose** (si no lo tienes aún).
+- Crear un **directorio de proyecto** en tu máquina local, por ejemplo:
+  ```bash
+  mkdir servidor_virtual_apache && cd servidor_virtual_apache
+  ```
+- Dentro, crear subcarpetas:
+  ```bash
+  mkdir -p sites/pepito.com/public_html
+  mkdir -p sites/juanito.com/public_html
+  mkdir -p apache/conf.d
+  ```
+
+**Capturas de pantalla sugeridas:**
+- Vista del árbol de directorios básico creado.
+
+***
+
+### **Fase 2. Configuración de los sitios web locales**
+
+**Objetivo:** Crear contenido básico de los sitios que se servirán desde Apache.
+
+**Acciones a realizar:**
+- Crear un archivo `index.html` en cada carpeta:
+  ```html
+  <!-- sites/pepito.com/public_html/index.html -->
+  <html><body><h1>Bienvenido a Pepito.com</h1></body></html>
+
+  <!-- sites/juanito.com/public_html/index.html -->
+  <html><body><h1>Bienvenido a Juanito.com</h1></body></html>
+  ```
+
+**Capturas de pantalla sugeridas:**
+- Archivos HTML dentro de cada carpeta.
+
+***
+
+### **Fase 3. Configurar los virtual hosts de Apache**
+
+**Objetivo:** Indicarle al servidor Apache (dentro del contenedor) cómo servir cada dominio.
+
+**Acciones a realizar:**
+- En `apache/conf.d`, crear dos archivos de configuración:
+  ```apache
+  # apache/conf.d/pepito.conf
+  <VirtualHost *:80>
+      ServerName pepito.com
+      DocumentRoot /var/www/pepito.com/public_html
+  </VirtualHost>
+
+  # apache/conf.d/juanito.conf
+  <VirtualHost *:80>
+      ServerName juanito.com
+      DocumentRoot /var/www/juanito.com/public_html
+  </VirtualHost>
+  ```
+
+**Capturas de pantalla sugeridas:**
+- Contenido de un archivo `.conf`.
+
+***
+
+### **Fase 4. Crear el Dockerfile**
+
+**Objetivo:** Preparar la imagen personalizada de Apache que copiará y usará tus configuraciones.
+
+**Acciones a realizar:**
+- En el directorio raíz del proyecto, crear un archivo `Dockerfile`:
+  ```dockerfile
+  FROM httpd:2.4
+
+  COPY apache/conf.d/*.conf /usr/local/apache2/conf/extra/
+
+  RUN echo 'Include conf/extra/pepito.conf' >> /usr/local/apache2/conf/httpd.conf \
+      && echo 'Include conf/extra/juanito.conf' >> /usr/local/apache2/conf/httpd.conf
+  ```
+
+**Capturas de pantalla sugeridas:**
+- Contenido del Dockerfile.
+
+***
+
+### **Fase 5. Configurar el volumen y el contenedor**
+
+**Objetivo:** Montar el sistema de archivos local dentro del contenedor para servir los sitios reales.
+
+**Acciones a realizar:**
+- Crear un archivo `docker-compose.yml`:
+  ```yaml
+  version: '3'
+  services:
+    apache:
+      build: .
+      ports:
+        - "80:80"
+      volumes:
+        - ./sites:/var/www
+  ```
+
+**Capturas de pantalla sugeridas:**
+- Vista del docker-compose.yml.
+
+***
+
+### **Fase 6. Modificar el archivo *hosts* del sistema local**
+
+**Objetivo:** Redirigir los dominios locales a tu contenedor.
+
+**Acciones a realizar:**
+- Editar el archivo hosts de tu sistema:
+  ```bash
+  sudo nano /etc/hosts
+  ```
+  Y añadir las líneas:
+  ```
+  127.0.0.1    pepito.com
+  127.0.0.1    juanito.com
+  ```
+
+**Capturas de pantalla sugeridas:**
+- Contenido editado del archivo hosts.
+
+***
+
+### **Fase 7. Lanzar el contenedor y probar**
+
+**Objetivo:** Ejecutar el contenedor y verificar que cada dominio sirve su contenido correcto.
+
+**Acciones a realizar:**
+- Construir la imagen y ejecutar el contenedor:
+  ```bash
+  docker-compose up --build
+  ```
+- Abrir el navegador y visitar:
+  - http://pepito.com — debería mostrar “Bienvenido a Pepito.com”.
+  - http://juanito.com — debería mostrar “Bienvenido a Juanito.com”.
+
+**Capturas de pantalla sugeridas:**
+- Salida del terminal al ejecutar `docker-compose up`.
+- Navegador mostrando cada sitio web.
+
+***
+
+### **Fase 8. Preparar README y documentación final**
+
+**Objetivo:** Redactar y subir al repositorio toda la documentación del proceso.
+
+**Acciones recomendadas:**
+- Crear un archivo `README.md` en el repo con:
+  1. **Introducción** — objetivo del proyecto.
+  2. **Arquitectura** — breve resumen del diagrama conceptual.
+  3. **Requisitos** — Docker, Ubuntu 18.04, etc.
+  4. **Guía paso a paso** — copia útil del resumen de fases.
+  5. **Capturas de pantalla** — integradas o enlazadas.
+  6. **Conclusiones.**
+
+**Capturas opcionales:**
+- Vista del repositorio final en GitHub con los archivos, incluyendo Dockerfile y README.
+
+***
+
+Este plan te permitirá mantener el orden del proyecto, comprender cada capa (desde el VPS virtual hasta Docker y los virtual hosts) y documentar con claridad cada fase para fines educativos y de presentación en GitHub.
