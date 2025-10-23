@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/screenshots/INDEX.md">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/screenshots/INDEX.md" />
+              <option name="updatedContent" value="# Índice de capturas (screenshots)&#10;&#10;Este archivo indexa las capturas incluidas en la carpeta `screenshots/` y añade una breve descripción de cada imagen para facilitar su localización.&#10;&#10;- **docker_images.png**&#10;  ![docker_images](docker_images.png)&#10;  - Muestra las imágenes Docker disponibles en el sistema.&#10;&#10;- **dominio1.png**&#10;  ![dominio1](dominio1.png)&#10;  - Captura del contenido servido por `dominio1.com` (index.html).&#10;&#10;- **dominio2.png**&#10;  ![dominio2](dominio2.png)&#10;  - Captura del contenido servido por `dominio2.com` (index.html).&#10;&#10;- **nano_etc_hosts.png**&#10;  ![nano_etc_hosts](nano_etc_hosts.png)&#10;  - Edición de `/etc/hosts` para añadir entradas de prueba (dominio1.com, dominio2.com).&#10;&#10;- **run_apache_sever_dockerizer.png**&#10;  ![run_apache](run_apache_sever_dockerizer.png)&#10;  - Ejecución del contenedor Apache con la imagen generada.&#10;&#10;- **run_dockerfile_apache_virtual_hosts.png**&#10;  ![run_dockerfile](run_dockerfile_apache_virtual_hosts.png)&#10;  - Resultado de construir la imagen a partir del `Dockerfile` del proyecto.&#10;&#10;- **step_1_directories.png**&#10;  ![step_1_directories](step_1_directories.png)&#10;  - Estructura de directorios del proyecto (sites/, apache_config/, etc.).&#10;&#10;&#10;&gt; Nota: Para ver las imágenes en un visor Markdown, abre `screenshots/INDEX.md` con un visualizador que soporte imágenes locales o navega al repositorio en un host que las muestre (GitHub/GitLab)." />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
